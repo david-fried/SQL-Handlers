@@ -1,6 +1,7 @@
 from ConnectionString import ConnectionString
+from SQLHandlers import SQLPyodbcHandler
 
-class SQLDatabase:
+class SQLDatabase(SQLPyodbcHandler):
 
     @classmethod
     def prod(cls, read_only=True):
