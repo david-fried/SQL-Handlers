@@ -47,3 +47,9 @@ class AccessDatabase(SQLDatabase):
             for tablename in tablenames:
                 all_columns[tablename] = [row[3] for row in c.columns(table=tablename)]
         return all_columns
+    
+    def get_views(self):
+        pass
+    
+    def get_view_definition(self, view_name):
+        pass
