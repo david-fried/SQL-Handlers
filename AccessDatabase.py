@@ -18,9 +18,8 @@ class AccessDatabase(SQLDatabase):
         self.directory = directory
         self.filename = filename
         self.path = os.path.join(self.directory, self.filename)
-        self.password = password
-        password =  '' if password is None else f' PWD={password}'
-        self.connection_string = 'Driver={Microsoft Access Driver (*.mdb, *.accdb)}; ' + f'DBQ={self.path};' + password
+        self.password = '' if password is None else f' PWD={password}'
+        self.connection_string = 'Driver={Microsoft Access Driver (*.mdb, *.accdb)}; ' + f'DBQ={self.path};' + self.password
         self.stats = os.stat(self.path)
         self.size = os.path.getsize(self.path)
         self.tstamp = os.path.getmtime(self.path)
