@@ -1,6 +1,6 @@
 from ConnectionString import ConnectionString
 
-class NpassDatabase(SQLDatabase):
+class SQLDatabase:
 
     @classmethod
     def prod(cls, read_only=True):
