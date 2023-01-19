@@ -2,7 +2,9 @@ from ConnectionString import ConnectionString
 from SQLHandlers import SQLPyodbcHandler
 
 class SQLDatabase(SQLPyodbcHandler):
-
+    
+    """This class has been used with MS SQL Server"""
+    
     @classmethod
     def prod(cls, read_only=True):
         return cls(ConnectionString().prod, read_only)
