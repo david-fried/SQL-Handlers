@@ -210,8 +210,7 @@ class SQLAlchemyHandler(SQLPyodbcHandler):
 		engine = sqlalchemy.create_engine(x)
 		return engine
 
-	def bulk_insert(self, df: pd.DataFrame, table_name: str, **kwargs)->None:
-		"""implements pyodbc's fast_executemany method (see helper method '_insert_values')"""
+	def bulk_insert(self, df: pd.DataFrame, table_name: str, **kwargs) -> None:
 		super().bulk_insert(df, table_name, **kwargs)
 
 	def _insert_values(self, df: pd.DataFrame, table_name: str, insert_identity_on: bool) -> None:
