@@ -146,7 +146,7 @@ class SQLPyodbcHandler:
 
 		Optional arguments:
 			remove_nulls (bool): Remove nulls before inserting. Defaults to False.
-			handle_nulls (None, str): Specify a column name containing nulls to prevent errors when inserting data.
+			handle_nulls (None, str): Prevent errors when inserting data. Specify '*' for all columns. This is usually the best option. Specify a column name containing nulls.
 			identity_insert_on (bool): False (default) or True.
 		"""
 		remove_nulls = kwargs.get('remove_nulls', False)
@@ -156,10 +156,15 @@ class SQLPyodbcHandler:
 		if remove_nulls:
 			df.dropna(inplace=True)
 
-		if handle_nulls is not None:
+		if handle_nulls == '*':
+			df = df.astype(object).where(pd.notnull(df), None)
+			self._insert_values(df, table_name, identity_insert_on)
+
+		elif handle_nulls is not None:
 			values, nulls = self._separate_nulls(df, handle_nulls)
 			self._insert_values(values, table_name, identity_insert_on)
 			self._insert_values(nulls, table_name, identity_insert_on)
+
 		else:
 			self._insert_values(df, table_name, identity_insert_on)
 
@@ -215,10 +220,6 @@ class SQLAlchemyHandler(SQLPyodbcHandler):
 
 	def _insert_values(self, df: pd.DataFrame, table_name: str, insert_identity_on: bool) -> None:
 		"""helper method for bulk_insert method"""
-		c = list(df.columns)
-		columns = ','.join(c)
-		params = ','.join(['?' for i in range(len(c))])
-		sql_insert_statement = f'INSERT INTO {table_name} ({columns}) VALUES ({params});'
 		df.to_sql(table_name, schema='dbo', con=self._conn(), if_exists='append', index=False)
 
 	def _separate_nulls(self, df: pd.DataFrame, column: str) -> (pd.DataFrame, pd.DataFrame):
