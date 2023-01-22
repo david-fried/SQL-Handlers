@@ -204,7 +204,7 @@ class SQLAlchemyHandler(SQLPyodbcHandler):
 		note that bulk_insert is the only 'public' method in this class
 		While the SQLPyodbcHandler is my goto Handler, the bulk insert in this class
 		is useful in situations where you want to create a new table in a SQL database from a pandas dataframe
-		or when the much quicker bulk_insert method in SQLPyodbcHandler is failing because of byte encoding issues
+		or when the bulk_insert method in SQLPyodbcHandler is failing because of encoding/decoding issues
 
 	"""
 	def _conn(self):
