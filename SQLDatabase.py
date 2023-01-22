@@ -3,7 +3,7 @@ from SQLHandlers import SQLPyodbcHandler
 
 class SQLDatabase(SQLPyodbcHandler):
     
-    """This class has been used with MS SQL Server and MS Access. Adjustments may necessary for other types of SQL Databases (e.g., Oracle)."""
+    """This class has been used with MS SQL Server. Adjustments may necessary for other types of SQL Databases (e.g., Oracle)."""
     
     @classmethod
     def prod(cls, read_only=True):
