@@ -17,10 +17,10 @@ class SQLPyodbcHandler:
 		Methods:
 			allow_method(func): 
 				Decorator used to disable methods when self.read_only == True.
-			query(self, 
+			query(self,
 				sql_query: str,
-			   pandas_dataframe=True) -> pd.DataFrame: 
-			   Purpose: Used to perform query of the data.
+				pandas_dataframe=True) -> pd.DataFrame:
+				Purpose: Used to perform query of the data.
 			execute(self, 
 				sql_statement: str, 
 				*parameters) -> None:
@@ -60,7 +60,7 @@ class SQLPyodbcHandler:
 		return pyodbc.connect(self.connection_string)
 	
 	def query(self, sql_query: str, pandas_dataframe=True) -> pd.DataFrame:
-		"""Useful for querying."""
+		"""Useful for quick querying of SQL database."""
 		conn = self._conn()
 		with conn:
 			if pandas_dataframe:
@@ -73,7 +73,7 @@ class SQLPyodbcHandler:
 		Purpose: Perform any Create, Update, Insert, Delete operation.
 
 		Required arguments:
-			sql_statement (str): If parameterized must include *parameters.
+			sql_statement (str): If parameterized than must include *parameters.
 				
 		Optional arguments:
 			*parameters (int, str, float, or datetime)
@@ -110,14 +110,14 @@ class SQLPyodbcHandler:
 
 		conn = self._conn()
 
-		if error_handling =='raise': #raise exception and rollback all transactions(???)
+		if error_handling =='raise': # raise exception and rollback all transactions (pyodbc default)
 
 			with conn:
 				c = conn.cursor()
 				for row in values:
 					c.execute(parameterized_sql_statement, row)
 
-		elif error_handling == 'ignore':
+		elif error_handling == 'ignore': # commit each row of values and ignore exceptions
 
 			with conn:
 				c = conn.cursor()
@@ -146,8 +146,7 @@ class SQLPyodbcHandler:
 
 		Optional arguments:
 			remove_nulls (bool): Remove nulls before inserting. Defaults to False.
-			handle_nulls (None, str): Prevent errors when inserting data. Specify '*' for all columns. This is usually the best option. Specify a column name containing nulls.
-				Important: setting handle_nulls parameter to '*" (all columns) can produce Hexadecimal value 0x00 NUL characters, which can cause an application to crash.
+			handle_nulls (None, str): Prevent errors when inserting data. Specify '*' for all columns. This is usually the best option. Otherwise, specify a column name containing nulls.
 			identity_insert_on (bool): False (default) or True.
 		"""
 		remove_nulls = kwargs.get('remove_nulls', False)
@@ -158,6 +157,9 @@ class SQLPyodbcHandler:
 			df.dropna(inplace=True)
 
 		if handle_nulls == '*':
+			for col in df.columns:
+				if df[col].dtype == 'object':
+					df[col] = df[col].fillna('') #This prevents Nones being inserted in columns with strings which can result in weird encoding/decoding
 			df = df.astype(object).where(pd.notnull(df), None)
 			self._insert_values(df, table_name, identity_insert_on)
 
@@ -171,7 +173,7 @@ class SQLPyodbcHandler:
 
 	@allow_method
 	def _insert_values(self, df: pd.DataFrame, table_name: str, identity_insert_on: bool) -> None:
-		"""helper method for bulk_insert function"""
+		"""helper method for bulk_insert method"""
 		c = list(df.columns)
 		columns = ','.join(c)
 		params = ','.join(['?' for i in range(len(c))])
@@ -204,7 +206,7 @@ class SQLAlchemyHandler(SQLPyodbcHandler):
 		note that bulk_insert is the only 'public' method in this class
 		While the SQLPyodbcHandler is my goto Handler, the bulk insert in this class
 		is useful in situations where you want to create a new table in a SQL database from a pandas dataframe
-		or when the bulk_insert method in SQLPyodbcHandler is failing because of encoding/decoding issues
+		or when bulk_insert method in SQLPyodbcHandler is failing because of weird characters
 
 	"""
 	def _conn(self):
