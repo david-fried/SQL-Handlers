@@ -227,3 +227,12 @@ class SQLAlchemyHandler(SQLPyodbcHandler):
 
 	def _separate_nulls(self, df: pd.DataFrame, column: str) -> (pd.DataFrame, pd.DataFrame):
 		return super()._separate_nulls(df, column)
+	
+	def query(self):
+		pass
+
+	def execute(self):
+		pass
+
+	def iter_execute(self):
+		pass
