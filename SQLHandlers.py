@@ -60,7 +60,7 @@ class SQLPyodbcHandler:
 		return pyodbc.connect(self.connection_string)
 	
 	def query(self, sql_query: str, pandas_dataframe=True) -> pd.DataFrame:
-		"""Useful for quick querying of SQL database."""
+		"""Useful for querying."""
 		conn = self._conn()
 		with conn:
 			if pandas_dataframe:
@@ -73,7 +73,7 @@ class SQLPyodbcHandler:
 		Purpose: Perform any Create, Update, Insert, Delete operation.
 
 		Required arguments:
-			sql_statement (str): If parameterized than must include *parameters.
+			sql_statement (str): If parameterized must include *parameters.
 				
 		Optional arguments:
 			*parameters (int, str, float, or datetime)
