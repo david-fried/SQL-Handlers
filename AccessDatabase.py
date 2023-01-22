@@ -6,7 +6,7 @@ import re
 from SQLDatabase import SQLDatabase
 
 
-class AccessDatabase(SQLDatabase):
+class AccessDatabase(SQLPyodbcHandler):
     """
     import pypyodbc as pyodbc to avoid truncation errors for long text (character length > 255???) when using Access database
     This method inherits from SQLDatabase, which uses pyodbc (not pyodbc).
