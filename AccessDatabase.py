@@ -9,9 +9,9 @@ from SQLDatabase import SQLDatabase
 class AccessDatabase(SQLPyodbcHandler):
     """
     import pypyodbc as pyodbc to avoid truncation errors for long text (character length > 255???) when using Access database
-    This method inherits from SQLDatabase, which uses pyodbc (not pyodbc).
+    This method inherits from SQLPyodbcHandler, which uses pyodbc (not pypyodbc).
     You may need to verify that importing pypyodbc at the top of the file in this manner works the way it should.
-    I'm not sure the bulk insert method works with Access...May need to test.
+    I'm not sure the bulk insert method works with Access...May need to test. Have not used Access in some time...
     """
 
     def __init__(self, directory: str, filename: str, password: str):
