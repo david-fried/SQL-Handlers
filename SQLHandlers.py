@@ -147,6 +147,7 @@ class SQLPyodbcHandler:
 		Optional arguments:
 			remove_nulls (bool): Remove nulls before inserting. Defaults to False.
 			handle_nulls (None, str): Prevent errors when inserting data. Specify '*' for all columns. This is usually the best option. Specify a column name containing nulls.
+				Important: setting handle_nulls parameter to '*" (all columns) can produce Hexadecimal value 0x00 NUL characters, which can cause an application to crash.
 			identity_insert_on (bool): False (default) or True.
 		"""
 		remove_nulls = kwargs.get('remove_nulls', False)
