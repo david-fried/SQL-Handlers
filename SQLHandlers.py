@@ -59,13 +59,23 @@ class SQLPyodbcHandler:
 		"""Open a database connection"""
 		return pyodbc.connect(self.connection_string)
 	
-	def query(self, sql_query: str, pandas_dataframe=True) -> pd.DataFrame:
-		"""Useful for quick querying of SQL database."""
+	def query(self, sql_query_statement: str, parameters=None, pandas_dataframe=True, **kwargs) -> pd.DataFrame:
+		"""
+		Purpose: Useful for querying SQL database.
+
+		Required arguments:
+			sql_query_statement (str): If parameterized than must pass a tuple of values to the parameters argument.
+				
+		Optional arguments:
+			parameters (tuple): Tuple of values.
+			pandas_dataframe (bool): True (default) of False. True returns pandas dataframe and False returns a list of tuples.
+			**kwargs: see pandas.read_sql documentation
+		"""
 		conn = self._conn()
 		with conn:
 			if pandas_dataframe:
-				return pd.read_sql(sql_query, conn)
-			return conn.cursor().execute(sql_query).fetchall()
+				return pd.read_sql(sql_query_statement, conn, params=parameters, **kwargs)
+			return conn.cursor().execute(sql_query_statement, parameters).fetchall()
 
 	@allow_method
 	def execute(self, sql_statement: str, *parameters) -> None:
@@ -227,7 +237,7 @@ class SQLAlchemyHandler(SQLPyodbcHandler):
 
 	def _separate_nulls(self, df: pd.DataFrame, column: str) -> (pd.DataFrame, pd.DataFrame):
 		return super()._separate_nulls(df, column)
-	
+
 	def query(self):
 		pass
 
