@@ -19,7 +19,9 @@ class SQLPyodbcHandler:
 				Decorator used to disable methods when self.read_only == True.
 			query(self,
 				sql_query: str,
-				pandas_dataframe=True) -> pd.DataFrame:
+				parameters: tuple,
+				pandas_dataframe=True,
+				**kwargs) -> pd.DataFrame:
 				Purpose: Used to perform query of the data.
 			execute(self, 
 				sql_statement: str, 
