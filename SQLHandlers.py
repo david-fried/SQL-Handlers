@@ -18,7 +18,7 @@ class SQLPyodbcHandler:
 			allow_method(func): 
 				Decorator used to disable methods when self.read_only == True.
 			query(self,
-				sql_query: str,
+				sql_query_statement: str,
 				parameters: tuple,
 				pandas_dataframe=True,
 				**kwargs) -> pd.DataFrame:
