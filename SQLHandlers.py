@@ -114,8 +114,7 @@ class SQLPyodbcHandler:
 						(2, 'Bob'),
 						(3, 'Bill')]
 
-			error_handling: If one statement fails raise exception ('raise') or ignore ('continue')
-				values: 'raise' (default) or 'continue'
+			error_handling: If one statement fails raise exception ('raise') or ignore and continue inserting/updating rows ('ignore')
 		"""
 		if '?' not in parameterized_sql_statement:
 			raise ValueError('Sql statement must be parameterized.')
