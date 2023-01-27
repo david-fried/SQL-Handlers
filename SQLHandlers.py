@@ -19,7 +19,7 @@ class SQLPyodbcHandler:
 				Decorator used to disable methods when self.read_only == True.
 			query(self,
 				sql_query_statement: str,
-				parameters: tuple,
+				*parameters,
 				pandas_dataframe=True,
 				**kwargs) -> pd.DataFrame:
 				Purpose: Used to perform query of the data.
@@ -61,7 +61,7 @@ class SQLPyodbcHandler:
 		"""Open a database connection"""
 		return pyodbc.connect(self.connection_string)
 	
-	def query(self, sql_query_statement: str, parameters=None, pandas_dataframe=True, **kwargs) -> pd.DataFrame:
+	def query(self, sql_query_statement: str, *parameters, pandas_dataframe=True, **kwargs) -> pd.DataFrame:
 		"""
 		Purpose: Useful for querying SQL database.
 
@@ -69,7 +69,7 @@ class SQLPyodbcHandler:
 			sql_query_statement (str): If parameterized than must pass a tuple of values to the parameters argument.
 				
 		Optional arguments:
-			parameters (tuple): Tuple of values.
+			*parameters
 			pandas_dataframe (bool): True (default) of False. True returns pandas dataframe and False returns a list of tuples.
 			**kwargs: see pandas.read_sql documentation
 		"""
