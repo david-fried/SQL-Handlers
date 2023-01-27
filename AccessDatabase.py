@@ -3,7 +3,7 @@ import pandas as pd
 import pypyodbc as pyodbc
 import os
 import re
-from SQLDatabase import SQLDatabase
+from SQLHandlers import SQLPyodbcHandler
 
 
 class AccessDatabase(SQLPyodbcHandler):
